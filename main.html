@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Design4Green</title>
+  <!--link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"-->
+
+    <!--script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script-->
+</head>
+
+<body>
+
+<nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <nav class="navbar navbar-light bg-light">
+            <a class="navbar-brand" href="#">Team 16: Green Coders</a>
+        </nav>
+    </div>
+</nav>
+
+<div class="container-fluid">
+    <div class="panel panel-default">
+        <div class="panel-heading" >
+		<span id = 'qNumber'></span>
+		<span id = 'question'></span>
+        </div>
+        <div class="panel-body" id="answer">
+        </div>
+    </div>
+</div>
+<div id = 'abc' ></div>
+<p align="center">
+    <button type="button" class="btn btn-secondary" id="save">Send</button>
+    <button type="button" class="btn btn-secondary" id="next">Next</button>
+</p>
+</body>
+<script>
+var questions = [];
+var answers = [];
+var qNumber = [];
+var qType = [];
+window.onload = function(){
+    
+    var xhr = new XMLHttpRequest();
+    var url = "http://51.75.249.196:5000/getAllBasicQuestions";
+    xhr.open("POST", url);
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+            var json = JSON.parse(xhr.responseText);
+	    console.log(json)
+            dealWithData(json.result);
+        }
+    };
+    var data = JSON.stringify({});
+    xhr.send(data);
+    
+	var cookie = [];
+	for(var i = 0; i < 88; i++){
+		cookie[i] = "0";
+	}
+	createCookie('greenCoders',cookie,10);
+}
+
+document.getElementById('next').onclick = function() {
+    saveCurrentAnswer();
+	getNextQuestion(parseInt(document.getElementById("qNumber").innerHTML)+1);
+};
+
+document.getElementById('save').onclick = function() {
+	var resultData = readCookie('greenCoders');
+    
+    var xhr = new XMLHttpRequest();
+    var url = "http://51.75.249.196:5000/saveAllAnswers";
+    xhr.open("POST", url, true);
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+            var json = JSON.parse(xhr.responseText);
+            alert(json.status);
+        }
+    };
+    var data = JSON.stringify({"answers":resultData});
+    xhr.send(data);
+};
+
+function saveCurrentAnswer(){
+	var number = document.getElementById("qNumber").innerHTML;
+	var output = getCurrentAnswer(number);
+	var currentCookie = readCookie('greenCoders');
+	if(currentCookie != ""){
+		cookieData = currentCookie.split(",");
+		cookieData[number-1] = output;
+                createCookie('greenCoders', cookieData, 10);
+	}else{
+		alert("Cookie not found");
+	}
+}
+
+function createCookie(name, value, days) {
+    	var expires;
+    	if (days) {
+		var date = new Date();
+		date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+        	expires = "; expires=" + date.toGMTString();
+    	} else {
+       		expires = "";
+   	}
+	document.cookie = encodeURIComponent(name) + "=" + encodeURIComponent(value) + expires + "; path=/";
+}
+
+function readCookie(name) {
+    	var nameEQ = encodeURIComponent(name) + "=";
+    	var ca = document.cookie.split(';');
+   	for (var i = 0; i < ca.length; i++) {
+       		var c = ca[i];
+        	while (c.charAt(0) === ' ')
+            		c = c.substring(1, c.length);
+       		if (c.indexOf(nameEQ) === 0)
+            		return decodeURIComponent(c.substring(nameEQ.length, c.length));
+    	}
+    	return null;
+}
+
+function eraseCookie(name) {
+	createCookie(name, "", -1);
+}
+
+function getCurrentAnswer(number){
+	number = number;
+	var out = '';
+	if(qType[number] == "single"){
+		alert(number)
+		out = document.querySelector('input[name="radio'+number+'"]:checked').value;		
+	}else if(qType[number] == "text"){
+		temp = document.getElementById("text"+number).value;
+        if(temp.indexOf(",") != 0){
+            temp = temp.replace(/,/g ,"#");
+        }
+        out = temp;
+	}else if(qType[number] == "single#text"){
+		if(document.getElementById("text"+number).value == ""){
+			out = document.querySelector('input[name="radio'+number+'"]:checked').value;
+		}else{
+			temp = document.getElementById("text"+number).value;
+			if(temp.indexOf(",") != 0){
+				temp = temp.replace(/,/g ,"#");
+			}
+			out = temp;
+		}
+	}
+	alert(out)
+	return out;
+}
+
+function getNextQuestion(question){
+	question = question - 1;
+	document.getElementById("qNumber").innerHTML = (qNumber[question]);
+        document.getElementById("question").innerHTML = (questions[question]);
+        document.getElementById("answer").innerHTML = (answers[question]);
+}
+
+function dealWithData(data){
+   	var formElement = '';
+    	for(var i = 1; i <= Object.keys(data).length; i++){
+		var queNo = 'question'+i;
+		var questionInfo = (data[queNo])
+       		var formElement = createFormElement(questionInfo['type'], questionInfo['choice'], questionInfo['number']);
+		question = questionInfo['question'];
+		qType.push(questionInfo['type']);
+		qNumber.push(questionInfo['number']);
+		questions.push(question);
+		answers.push(formElement);
+   	 }
+	getNextQuestion(1);
+}
+
+
+function createFormElement(type, choice, number){
+	var formElement = "";
+    	if(type == "single"){
+      		for(var i = 0; i < choice.length; i++){
+        		formElement = formElement + "<input type = 'radio' name = 'radio"+number+"' value = '"+choice[i]+"' required>"+choice[i]+"<br>";
+       		}
+   	}else if(type == "single#text"){
+       		for(var i = 0; i < choice.length; i++){
+            		formElement = formElement + "<input type = 'radio' name = 'radio"+number+"' value = '"+choice[i]+"' required>"+choice[i]+"<br>";
+        	}
+        	formElement = formElement + "<input type = 'text' id = 'text"+number+"' required><br>";
+   	}else if(type == "text"){
+		formElement = formElement + "<input type = 'text' id = 'text"+number+"' required><br>";
+   	}
+    	return formElement;
+}
+
+</script>
+</html>
