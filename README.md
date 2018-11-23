@@ -20,7 +20,7 @@ The solution to the design challenge is composed of one html page with a survey,
 
 ![](architecture.png)
 
-1. User sends accesses the website
+1. User hits the url.
 2. The GET request is sent to the Flask server. The functionality is developed in ```endpoint.py```.
 3. ```main.html``` file is passed to the user.
 4-6. Upon loading ```main.html``` the server pulls questions from MongoDB.
@@ -39,7 +39,9 @@ The solution to the design challenge is composed of one html page with a survey,
 
 ## Sustainability measurement
 
-Our final ecoindex turned out to be 89 (Category A).
+Our final ecoindex turned out to be 90 (Category A).
+
+![](ecoindex.png)
 
 ## Authors
 
