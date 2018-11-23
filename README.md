@@ -21,7 +21,9 @@ The solution to the design challenge is composed of one html page with a survey,
 ![](architecture.png)
 
 1. User hits the url.
+
 2. The GET request is sent to the Flask server. The functionality is developed in ```endpoint.py```.
+
 3. ```main.html``` file is passed to the user.
 
 4-6. Upon loading ```main.html``` the server pulls questions from MongoDB.
