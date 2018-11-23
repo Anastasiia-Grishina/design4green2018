@@ -1,6 +1,8 @@
 # Design-4-Green2018
 
-Challenge of eco-design. 48 hours non stop challange from November 21 to 23 2018.
+Challenge of eco-design focused on designing sustainable solutions for everyday purposes. 48 hours non-stop coding challange, November 21-23, 2018.
+
+The task was to develop a web application for online survey consisting of 88 questions.The survey was designed to assess the maturity of companies in France in terms of setting up eco-design digital services. An ultimate objective was to minimize the energy consumption and carbon footprint of the application without hampering user experience.
 
 ## Built With
 
@@ -35,10 +37,15 @@ The solution to the design challenge is composed of one html page with a survey,
 | /continue               | id            | application/json | application/json | POST |
 | /generate               |               |                  | file             | POST |
 
+## Sustainability measurement
+
+Our final ecoindex turned out to be 89 (Category A).
+
 ## Authors
 
 - **Anastasiia Grishina**
-- **Maliha Rahman Mishi**
-- **Krishna Teja Vaddepalli**
-- **Sami Kabir**
 - **Feruzjon Muyassarov**
+- **Krishna Teja Vaddepalli**
+- **Maliha Rahman Mishi**
+- **Sami Kabir**
+
