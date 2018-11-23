@@ -23,7 +23,9 @@ The solution to the design challenge is composed of one html page with a survey,
 1. User hits the url.
 2. The GET request is sent to the Flask server. The functionality is developed in ```endpoint.py```.
 3. ```main.html``` file is passed to the user.
+
 4-6. Upon loading ```main.html``` the server pulls questions from MongoDB.
+
 7. The updated html file is shown to the user
 
 ## API
@@ -39,9 +41,13 @@ The solution to the design challenge is composed of one html page with a survey,
 
 ## Sustainability measurement
 
-Our final ecoindex turned out to be 90 (Category A).
+1. Our final ecoindex turned out to be 90 (Category A).
 
 ![](ecoindex.png)
+
+2. Source Lines Of Code: 673.
+
+3. Total loading size 30.1 KB.
 
 ## Authors
 
