@@ -1,5 +1,4 @@
-# design4green2018
-Design for green 2018
+# Design-4-Green2018
 
 ## API
 
