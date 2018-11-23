@@ -21,8 +21,24 @@ def getAllBasicQuestions():
 @app.route('/saveAllAnswers', methods=['POST'])
 def saveAllAnswers():
     answers = request.json['answers']
-    print(answers)
     return manager.saveAllAnswers(answers.split(',')), 200, {'Content-Type':'application/json'}
+
+@app.route('/pauseAnswering', methods=['POST'])
+def pauseAnswering():
+    answers = request.json['answers']
+    return manager.pauseAnswering(answers.split(',')), 200, {'Content-Type':'application/json'}
+
+@app.route('/continue', methods=['POST'])
+def cont():
+    id = request.json["id"]
+    return manager.contd(id), 200, {'Content-Type':'application/json'}
+
+@app.route('/generate',methods=['POST'])
+def generate():
+    path = manager.generate()
+    response = send_from_directory(directory='/root/greencoders/',filename='greencoders.csv')
+    return response
+    
 
 if __name__ == "__main__":
     app.run(host=os.getenv('IP', '0.0.0.0'),port=int(os.getenv('PORT', 5000)))
