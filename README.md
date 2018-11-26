@@ -1,4 +1,4 @@
-# Design-4-Green2018
+# Design4Green-2018
 
 Challenge of eco-design focused on designing sustainable solutions for everyday purposes. 48 hours non-stop coding challange, November 21-23, 2018.
 
